@@ -5,25 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="./style.css">
-  <script src="./main.js" async></script>
-  <script src="./skeemaParser.js" async></script>
+  <script src="./js/main.js" async></script>
+  <script src="./js/skeemaParser.js" async></script>
   <title>SkeemaParser</title>
 </head>
 <body>
 
   <div id="upload">
-    <h1>Insert a schema.rb file to hash it !</h1>
+    <h1>Insert a schema.rb file here ...</h1>
+    <img src="./img/down-arrow-sketch.svg" alt="down-arrow" >
     <form>
       <input id="file-input" type="file" >
-      <label for="skip-timestamp">Skip Timestamp ?</label>
-      <select name="skip-timestamp" id="skip-timestamp">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
+      <div class="inline">
+        <label for="skip-timestamp">Skip Timestamp ?</label>
+        <select name="skip-timestamp" id="skip-timestamp">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
       <input type="submit" >
     </form>
+    <img src="./img/rigth-arrow-sketch.svg" alt="right-arrow" >
+    <h1>... and get it hashed here !</h1>
   </div>
-  <div id="result" style="display: none; overflow-wrap: anywhere;"></div>
+  <div id="result"></div>
   
 </body>
 </html>

@@ -7,6 +7,8 @@
 html,
 body {
   background-color: #f5f5f5;
+  display: flex;
+  flex-direction: row;
 }
 
 #upload {
@@ -14,20 +16,33 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  width: 30vw;
+  height: 100vh;
 }
 
 h1 {
   margin: 1em;
 }
 
+form {
+  margin: 2em 0em;
+  display: flex;
+  flex-direction: column;
+}
+
+.inline {
+  margin: 3em 0em;
+  display: flex;
+  justify-content: center;
+}
+
 #result {
-  margin: 0 10em;
   padding: 2em;
-  background-color: grey;
+  width: 70vw;
+  background-color: #c9c9c9;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
-  border-radius: 1em;
 }

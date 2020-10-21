@@ -13,7 +13,15 @@
 
   <div id="upload">
     <h1>Insert a schema.rb file to hash it !</h1>
-    <input id="file-input" type="file" >
+    <form>
+      <input id="file-input" type="file" >
+      <label for="skip-timestamp">Skip Timestamp ?</label>
+      <select name="skip-timestamp" id="skip-timestamp">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <input type="submit" >
+    </form>
   </div>
   <div id="result" style="display: none; overflow-wrap: anywhere;"></div>
   

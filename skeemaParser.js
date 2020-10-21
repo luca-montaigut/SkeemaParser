@@ -1,6 +1,7 @@
 class SkeemaParser {
-  constructor(schema) {
+  constructor(schema, skipTimestamp = true) {
     this.schema = schema;
+    this.skipTimestamp = skipTimestamp;
     this.table = "";
     this.result = {};
   }
@@ -37,7 +38,20 @@ class SkeemaParser {
     if (line.trim().match(/^end$/)) {
       return this.endTable();
     }
-    const column = this.extractColumnName(line);
+
+    const columnName = this.extractColumnName(line);
+    const columnType = this.extractColumnType(line);
+
+    if (columnType === "index") {
+      this.addIndex(columnType, columnName);
+    } else if (
+      (columnName === "created_at" && this.skipTimestamp) ||
+      (columnName === "updated_at" && this.skipTimestamp)
+    ) {
+      return;
+    } else {
+      this.addColumn(columnType, columnName);
+    }
   };
 
   findNewTable = (line) => {
@@ -54,14 +68,10 @@ class SkeemaParser {
   };
 
   extractColumnName = (column) => {
-    const type = column.trim().split(" ")[0].split(".")[1];
-    const name = column.trim().split(" ")[1].split('"')[1];
-
-    if (type === "index") {
-      this.addIndex(type, name);
-    } else {
-      this.addColumn(type, name);
-    }
+    return column.trim().split(" ")[1].split('"')[1];
+  };
+  extractColumnType = (column) => {
+    return column.trim().split(" ")[0].split(".")[1];
   };
 
   startTable = (tableName) => {

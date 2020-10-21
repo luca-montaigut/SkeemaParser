@@ -44,5 +44,10 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border-left: 1px solid black;
+}
+
+button {
+  padding: 0.5em 2em;
+  margin-bottom: 1em;
 }

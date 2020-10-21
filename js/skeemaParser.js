@@ -21,13 +21,9 @@ class SkeemaParser {
   };
 
   isSchemaDotRbFile = (allLines) => {
-    let certification = false;
-    allLines.forEach((line) => {
-      if (line.trim().match(/ActiveRecord::Schema/)) {
-        certification = true;
-      }
-    });
-    return certification;
+    return Boolean(
+      allLines.find((line) => line.trim().match(/ActiveRecord::Schema/))
+    );
   };
 
   processLine = (line) => {
@@ -93,6 +89,7 @@ class SkeemaParser {
     this.result[this.table][type].push(name);
   };
 }
+
 // Parser for schema.rb file Rails 5+ (maybe before but untested)
 // return {tableName: {columnName: columnType, ... , index: [columnName, ...]} ...}
 // Based on : https://github.com/rubysolo/skeema

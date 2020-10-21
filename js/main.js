@@ -4,19 +4,30 @@ const input = document.querySelector("#file-input");
 const skipTimestamp = document.querySelector("#skip-timestamp");
 const result = document.querySelector("#result");
 
-const splitToJSONify = (hash) => {
+const displayableJsonText = (hash) => {
   return JSON.stringify(hash)
     .split(/(,)|({)|(},)|(})|(\[)|(],)|(])/)
     .filter((el) => el !== undefined && el !== "");
 };
 
+const makeDownloadButton = (hash) => {
+  const dataUrl = `data:text/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify(hash, 0, 2)
+  )}`;
+  return `<a download="schema.json" href="${dataUrl}"><button type="button">&#8659 Download &#8659</button></a>`;
+};
+
 const displayResult = (hash) => {
   result.innerHTML = `<b>schema.json</b><br/><div id="area"></div>`;
   const area = document.querySelector("#area");
+
+  const downloadButton = makeDownloadButton(hash);
+  result.insertAdjacentHTML("afterbegin", downloadButton);
+
   const space = "  ";
   let spacer = 0;
 
-  splitToJSONify(hash).forEach((line) => {
+  displayableJsonText(hash).forEach((line) => {
     if (line === "{") {
       area.insertAdjacentHTML(
         "beforeend",
@@ -43,8 +54,6 @@ const displayResult = (hash) => {
   });
 };
 
-//<p>${JSON.stringify(hash)}</p>
-
 const handleFile = (e) => {
   e.preventDefault();
   const file = input.files[0];
@@ -54,12 +63,6 @@ const handleFile = (e) => {
 
   result.innerHTML = "";
 
-  if (file.name !== "schema.rb") {
-    if (!confirm('Are you sure that your file is a "schema.rb" ?')) {
-      return false;
-    }
-  }
-
   const reader = new FileReader();
 
   reader.readAsText(file);
@@ -67,7 +70,6 @@ const handleFile = (e) => {
   reader.onload = (event) => {
     const schema = event.target.result;
     const skip = skipTimestamp.value === "true";
-    console.log(skip);
     hash = new SkeemaParser(schema, skip).parse();
     if (!hash) {
       throw Error("Not a schema.rb file");

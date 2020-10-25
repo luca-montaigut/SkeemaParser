@@ -31,9 +31,13 @@ form {
 }
 
 .inline {
-  margin: 3em 0em;
+  margin: 0.5em 0em;
   display: flex;
   justify-content: center;
+}
+
+input {
+  padding: 1em 1em;
 }
 
 #result {

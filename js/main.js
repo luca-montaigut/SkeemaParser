@@ -1,7 +1,8 @@
 const upload = document.querySelector("#upload");
 const form = document.querySelector("form");
 const input = document.querySelector("#file-input");
-const skipTimestamp = document.querySelector("#skip-timestamp");
+const skipTimestamps = document.querySelector("#skip-timestamps");
+const skipActiveStorage = document.querySelector("#skip-active-storage");
 const result = document.querySelector("#result");
 
 const displayableJsonText = (hash) => {
@@ -69,8 +70,10 @@ const handleFile = (e) => {
 
   reader.onload = (event) => {
     const schema = event.target.result;
-    const skip = skipTimestamp.value === "true";
-    hash = new SkeemaParser(schema, skip).parse();
+    debugger;
+    const timestamps = skipTimestamps.checked;
+    const activeStorage = skipActiveStorage.checked;
+    hash = new SkeemaParser(schema, timestamps, activeStorage).parse();
     if (!hash) {
       throw Error("Not a schema.rb file");
     }

@@ -1,7 +1,8 @@
 class SkeemaParser {
-  constructor(schema, skipTimestamp = true) {
+  constructor(schema, skipTimestamps = true, skipActiveStorage = true) {
     this.schema = schema;
-    this.skipTimestamp = skipTimestamp;
+    this.skipTimestamps = skipTimestamps;
+    this.skipActiveStorage = skipActiveStorage;
     this.table = "";
     this.result = {};
   }
@@ -41,8 +42,8 @@ class SkeemaParser {
     if (columnType === "index") {
       this.addIndex(columnType, columnName);
     } else if (
-      (columnName === "created_at" && this.skipTimestamp) ||
-      (columnName === "updated_at" && this.skipTimestamp)
+      (columnName === "created_at" && this.skipTimestamps) ||
+      (columnName === "updated_at" && this.skipTimestamps)
     ) {
       return;
     } else {
@@ -58,9 +59,17 @@ class SkeemaParser {
   };
 
   extractTableName = (line) => {
+    let tableName;
     if (line.trim().match(/create_table (\S+)/)) {
-      return line.split('"')[1];
+      tableName = line.split('"')[1];
     }
+    if (
+      (tableName === "active_storage_attachments" && this.skipActiveStorage) ||
+      (tableName === "active_storage_blobs" && this.skipActiveStorage)
+    ) {
+      return false;
+    }
+    return tableName;
   };
 
   extractColumnName = (column) => {
